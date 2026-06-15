@@ -1,0 +1,142 @@
+##########################################################
+# SDC CONSTRAINT FILE
+# PROJECT : LOW-POWER ALU SYSTEM
+# FLOW    : NC Launch -> Genus -> Innovus
+##########################################################
+
+current_design alu_system
+
+##########################################################
+# CLOCK DEFINITIONS
+##########################################################
+
+# Main System Clock (100 MHz)
+
+create_clock \
+-name clk \
+-period 10 \
+-waveform {0 5} \
+[get_ports clk]
+
+##########################################################
+# CLOCK ATTRIBUTES
+##########################################################
+
+set_clock_uncertainty 0.1 [get_clocks clk]
+
+set_clock_transition 0.1 [get_clocks clk]
+
+set_clock_latency 0.2 [get_clocks clk]
+
+##########################################################
+# FALSE PATHS
+##########################################################
+
+# Ignore reset path during timing analysis
+
+set_false_path \
+-from [get_ports rst_n]
+
+##########################################################
+# INPUT DELAYS
+##########################################################
+
+# ALU Inputs
+
+set_input_delay 1.0 \
+-clock clk \
+[get_ports A[*]]
+
+set_input_delay 1.0 \
+-clock clk \
+[get_ports B[*]]
+
+# Opcode Input
+
+set_input_delay 1.0 \
+-clock clk \
+[get_ports opcode[*]]
+
+# Control Inputs
+
+set_input_delay 1.0 \
+-clock clk \
+[get_ports valid]
+
+set_input_delay 1.0 \
+-clock clk \
+[get_ports wr_en]
+
+set_input_delay 1.0 \
+-clock clk \
+[get_ports wr_addr[*]]
+
+##########################################################
+# OUTPUT DELAYS
+##########################################################
+
+# ALU Outputs
+
+set_output_delay 1.0 \
+-clock clk \
+[get_ports result[*]]
+
+set_output_delay 1.0 \
+-clock clk \
+[get_ports carry]
+
+set_output_delay 1.0 \
+-clock clk \
+[get_ports valid_out]
+
+set_output_delay 1.0 \
+-clock clk \
+[get_ports toggle_count[*]]
+
+##########################################################
+# DESIGN RULE CONSTRAINTS
+##########################################################
+
+# Transition Limit
+
+set_max_transition 0.5 [current_design]
+
+# Fanout Limit
+
+set_max_fanout 10 [current_design]
+
+# Capacitance Limit
+
+set_max_capacitance 0.1 [current_design]
+
+##########################################################
+# INPUT DRIVE STRENGTH
+##########################################################
+
+set_drive 1 [get_ports A[*]]
+
+set_drive 1 [get_ports B[*]]
+
+set_drive 1 [get_ports opcode[*]]
+
+set_drive 1 [get_ports valid]
+
+set_drive 1 [get_ports wr_en]
+
+set_drive 1 [get_ports wr_addr[*]]
+
+##########################################################
+# OUTPUT LOAD
+##########################################################
+
+set_load 0.05 [get_ports result[*]]
+
+set_load 0.05 [get_ports carry]
+
+set_load 0.05 [get_ports valid_out]
+
+set_load 0.05 [get_ports toggle_count[*]]
+
+##########################################################
+# END OF FILE
+##########################################################

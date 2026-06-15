@@ -1,0 +1,3 @@
+    Hinst Name       Module Name          Inst Count           Total Area
+----------------------------------------------------------------------
+neural_sar_adc_top                               255             2232.855
